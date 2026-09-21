@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 
 <html lang="fr">
@@ -18,6 +17,90 @@
   >
 
   <link rel="stylesheet" href="style.css">
+
+  <!--
+    Styles minimaux pour que le bandeau fonctionne visuellement
+    avant que tu n'ajoutes ton propre CSS. Tu peux tout remplacer /
+    surcharger : les classes utilisées sont cookie-banner,
+    cookie-banner-text, cookie-banner-actions, cookie-btn,
+    cookie-btn-primary, cookie-btn-secondary, map-consent-placeholder,
+    map-consent-btn.
+  -->
+  <style>
+    .hidden {
+      display: none !important;
+    }
+
+    .cookie-banner {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 9999;
+      background: #1f1f1f;
+      color: #fff;
+      padding: 16px 20px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .cookie-banner-text {
+      flex: 1 1 260px;
+    }
+
+    .cookie-banner-text a {
+      color: inherit;
+      text-decoration: underline;
+    }
+
+    .cookie-banner-actions {
+      display: flex;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    .cookie-btn {
+      border: 1px solid #fff;
+      background: transparent;
+      color: #fff;
+      padding: 8px 16px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .cookie-btn-primary {
+      background: #fff;
+      color: #1f1f1f;
+    }
+
+    .map-consent-placeholder {
+      width: 100%;
+      min-height: 300px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      text-align: center;
+      padding: 24px;
+      background: #f2f2f2;
+      box-sizing: border-box;
+    }
+
+    .map-consent-btn {
+      border: 1px solid #1f1f1f;
+      background: #1f1f1f;
+      color: #fff;
+      padding: 10px 18px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+  </style>
 </head>
 
 <body>
@@ -188,7 +271,7 @@
 </section>
 
 <!-- MAP -->
-    
+
 <section class="map-section">
 
   <p class="section-label">
@@ -201,20 +284,41 @@
     94440 Santeny
   </p>
 
-  <div class="map-preview">
+  <div class="map-preview" id="map-preview">
+
+    <!--
+      Placeholder affiché tant que le visiteur n'a pas consenti
+      au dépôt de cookies / chargement de contenus Google.
+    -->
+    <div class="map-consent-placeholder" id="map-placeholder">
+      <p>
+        Cette carte est fournie par Google Maps. Son affichage entraîne
+        le chargement de contenus et le dépôt de cookies par Google.
+      </p>
+      <button type="button" id="map-consent-accept" class="map-consent-btn">
+        Afficher la carte
+      </button>
+    </div>
+
+    <!--
+      L'iframe n'a plus de src au chargement de la page :
+      data-src est copié dans src uniquement après consentement.
+    -->
     <iframe
-      src="https://www.google.com/maps?q=Château+de+Santeny,+2+route+de+Marolles,+94440+Santeny&output=embed"
+      id="map-iframe"
+      data-src="https://www.google.com/maps?q=Château+de+Santeny,+2+route+de+Marolles,+94440+Santeny&output=embed"
       width="100%"
       height="300"
-      style="border:0;"
+      style="border:0; display:none;"
       allowfullscreen=""
       loading="lazy"
       referrerpolicy="no-referrer-when-downgrade">
     </iframe>
+
   </div>
 
   <p class="map-link">
-    <a
+    
       href="https://www.google.com/maps/search/?api=1&query=Château+de+Santeny,+2+route+de+Marolles,+94440+Santeny"
       target="_blank"
       rel="noopener">
@@ -540,7 +644,43 @@
   <span>
     Juin 2027
   </span>
+
+  <button type="button" id="cookie-settings-link" class="text-button">
+    Gérer les cookies
+  </button>
 </footer>
+
+<!-- BANDEAU DE CONSENTEMENT COOKIES -->
+
+<div
+  id="cookie-banner"
+  class="cookie-banner hidden"
+  role="dialog"
+  aria-live="polite"
+  aria-label="Consentement aux cookies"
+>
+
+  <div class="cookie-banner-text">
+    <p>
+      Ce site utilise Google Maps pour vous montrer l'emplacement du
+      château. L'affichage de la carte entraîne le dépôt de cookies et
+      le transfert de données (dont votre adresse IP) à Google.
+      Vous pouvez accepter ou refuser ce contenu ; le reste du site
+      fonctionne sans lui.
+    </p>
+  </div>
+
+  <div class="cookie-banner-actions">
+    <button type="button" id="cookie-reject" class="cookie-btn cookie-btn-secondary">
+      Refuser
+    </button>
+    <button type="button" id="cookie-accept" class="cookie-btn cookie-btn-primary">
+      Accepter
+    </button>
+  </div>
+
+</div>
+
   <!-- NAVIGATION -->
 
   <script>
@@ -633,6 +773,187 @@ mainNav.querySelectorAll("a").forEach((link) => {
 
       }
     );
+
+  </script>
+
+  <!-- CONSENTEMENT COOKIES / GOOGLE MAPS -->
+
+  <script>
+
+    const CONSENT_KEY = "wedding-maps-consent";
+    // valeurs possibles : "accepted", "rejected", ou absente
+
+    const cookieBanner =
+      document.getElementById("cookie-banner");
+
+    const cookieAcceptButton =
+      document.getElementById("cookie-accept");
+
+    const cookieRejectButton =
+      document.getElementById("cookie-reject");
+
+    const cookieSettingsLink =
+      document.getElementById("cookie-settings-link");
+
+    const mapIframe =
+      document.getElementById("map-iframe");
+
+    const mapPlaceholder =
+      document.getElementById("map-placeholder");
+
+    const mapConsentAcceptButton =
+      document.getElementById("map-consent-accept");
+
+
+    function getConsent() {
+
+      try {
+
+        return localStorage.getItem(CONSENT_KEY);
+
+      } catch (error) {
+
+        // Stockage indisponible (navigation privée stricte, etc.)
+        return null;
+
+      }
+
+    }
+
+
+    function setConsent(value) {
+
+      try {
+
+        localStorage.setItem(CONSENT_KEY, value);
+
+      } catch (error) {
+
+        // On continue même si on ne peut pas mémoriser le choix.
+
+      }
+
+    }
+
+
+    function showCookieBanner() {
+
+      cookieBanner.classList.remove("hidden");
+
+    }
+
+
+    function hideCookieBanner() {
+
+      cookieBanner.classList.add("hidden");
+
+    }
+
+
+    function loadMap() {
+
+      if (mapIframe.getAttribute("src")) {
+
+        // Carte déjà chargée.
+        return;
+
+      }
+
+      mapIframe.setAttribute(
+        "src",
+        mapIframe.dataset.src
+      );
+
+      mapIframe.style.display = "block";
+
+      if (mapPlaceholder) {
+
+        mapPlaceholder.style.display = "none";
+
+      }
+
+    }
+
+
+    function acceptConsent() {
+
+      setConsent("accepted");
+
+      loadMap();
+
+      hideCookieBanner();
+
+    }
+
+
+    function rejectConsent() {
+
+      setConsent("rejected");
+
+      hideCookieBanner();
+
+      // La carte reste masquée, le placeholder reste affiché.
+
+    }
+
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      () => {
+
+        const consent = getConsent();
+
+        if (consent === "accepted") {
+
+          loadMap();
+
+        } else if (consent === "rejected") {
+
+          // Rien à faire : le placeholder reste visible.
+
+        } else {
+
+          showCookieBanner();
+
+        }
+
+      }
+    );
+
+
+    cookieAcceptButton.addEventListener(
+      "click",
+      acceptConsent
+    );
+
+    cookieRejectButton.addEventListener(
+      "click",
+      rejectConsent
+    );
+
+    if (mapConsentAcceptButton) {
+
+      mapConsentAcceptButton.addEventListener(
+        "click",
+        acceptConsent
+      );
+
+    }
+
+    if (cookieSettingsLink) {
+
+      cookieSettingsLink.addEventListener(
+        "click",
+        (event) => {
+
+          event.preventDefault();
+
+          showCookieBanner();
+
+        }
+      );
+
+    }
 
   </script>
 
