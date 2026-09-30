@@ -714,10 +714,25 @@ footer {
 }
 
   .final {
-    padding: 120px 20px;
+    min-height: 75vh;
+    background-size: 100% auto;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-color: #25221f;
   }
 
+  .final .eyebrow {
+    top: 24px;
+    left: 24px;
+  }
+
+  .final .final-details {
+    right: 24px;
+    bottom: 24px;
+    max-width: 75%;
+  }
 }
+
 /* =========================
    RSVP
    ========================= */
