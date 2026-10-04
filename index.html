@@ -95,7 +95,12 @@
 </head>
 
 <body>
-
+<div class="language-toggle" aria-label="Choisir la langue">
+  <button type="button" class="lang-btn active" data-lang="fr">FR</button>
+  <span class="lang-separator">|</span>
+  <button type="button" class="lang-btn" data-lang="en">EN</button>
+</div>
+  
 <header class="header">
 
   <div class="logo">
@@ -107,12 +112,41 @@
   </button>
 
   <nav id="main-nav">
-    <a href="#story">Notre Histoire</a>
-    <a href="#day">La Journée</a>
-    <a href="#venue">Le Château</a>
-    <a href="#gallery">La Galerie</a>
-    <a href="#rsvp">RSVP</a>
-    <a href="#faq">La FAQ</a>
+    <a
+      href="#story"
+      data-fr="Notre Histoire"
+      data-en="Our Story"
+    >Notre Histoire</a>
+  
+    <a
+      href="#day"
+      data-fr="La Journée"
+      data-en="The Day"
+    >La Journée</a>
+  
+    <a
+      href="#venue"
+      data-fr="Le Château"
+      data-en="The Château"
+    >Le Château</a>
+  
+    <a
+      href="#gallery"
+      data-fr="La Galerie"
+      data-en="Gallery"
+    >La Galerie</a>
+  
+    <a
+      href="#rsvp"
+      data-fr="RSVP"
+      data-en="RSVP"
+    >RSVP</a>
+  
+    <a
+      href="#faq"
+      data-fr="La FAQ"
+      data-en="FAQ"
+    >La FAQ</a>
   </nav>
 
 </header>
@@ -126,9 +160,13 @@
 
   <div class="hero-content">
 
-    <p class="eyebrow">
-      Mariage de
-    </p>
+      <p
+    class="eyebrow"
+    data-fr="Mariage de"
+    data-en="Wedding of"
+  >
+    Mariage de
+  </p>
 
     <h1>
       Tiffany
@@ -136,11 +174,20 @@
       Asill
     </h1>
 
-    <p class="date">
+    <p
+      class="date"
+      data-fr="21 Juin 2027 · Château de Santeny"
+      data-en="June 21, 2027 · Château de Santeny"
+    >
       21 Juin 2027 · Château de Santeny
     </p>
 
-    <a href="#story" class="scroll">
+    <a
+      href="#story"
+      class="scroll"
+      data-fr="Découvrez notre journée ↓"
+      data-en="Discover our day ↓"
+    >
       Découvrez notre journée ↓
     </a>
 
