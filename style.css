@@ -1229,8 +1229,8 @@ fieldset legend {
   font-weight: 500;
   letter-spacing: 0.12em;
 
-  background: var(--warm-white);
-  padding: 5px 8px;
+  background: transparent;
+  padding: 0;
 }
 
 .lang-btn {
