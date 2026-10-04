@@ -1193,3 +1193,60 @@ fieldset legend {
   }
 
 }
+
+/* =========================
+   LANGUAGE TOGGLE
+========================= */
+
+.language-toggle {
+  position: fixed;
+  top: 24px;
+  right: 28px;
+  z-index: 1000;
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+}
+
+.lang-btn {
+  border: 0;
+  padding: 4px 2px;
+  background: transparent;
+
+  color: var(--muted);
+  font: inherit;
+  letter-spacing: inherit;
+
+  cursor: pointer;
+
+  transition:
+    color 0.25s ease,
+    opacity 0.25s ease;
+}
+
+.lang-btn:hover {
+  color: var(--dark);
+}
+
+.lang-btn.active {
+  color: var(--dark);
+}
+
+.lang-separator {
+  color: var(--line);
+  user-select: none;
+}
+
+@media (max-width: 600px) {
+  .language-toggle {
+    top: 18px;
+    right: 18px;
+    font-size: 10px;
+  }
+}
