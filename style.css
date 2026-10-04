@@ -1213,7 +1213,7 @@ fieldset legend {
 
 .language-toggle {
   position: fixed;
-  top: 34px;
+  top: 28px;
   right: 5vw;
 
   z-index: 1000;
