@@ -725,6 +725,7 @@
           Nous vous invitons à éviter le blanc, le crème et toute autre couleur
           traditionnellement réservée à la mariée 🤍.
         </p>
+      </details>
       
       <details>
         <summary
@@ -2035,6 +2036,77 @@ attendees =
 
   </script>
 
+  <script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  const languageButtons = document.querySelectorAll(".lang-btn");
+
+  const translatableElements =
+    document.querySelectorAll("[data-fr][data-en]");
+
+  const pageTitles = {
+    fr: "Tiffany & Asill — 21 Juin 2027",
+    en: "Tiffany & Asill — June 21, 2027"
+  };
+
+  function setLanguage(language) {
+
+    // Change all translated text
+    translatableElements.forEach((element) => {
+      element.innerHTML = element.dataset[language];
+    });
+
+    // Update active button
+    languageButtons.forEach((button) => {
+      button.classList.toggle(
+        "active",
+        button.dataset.lang === language
+      );
+    });
+
+    // Update document language
+    document.documentElement.lang = language;
+
+    // Update browser tab title
+    document.title = pageTitles[language];
+
+    // Remember language preference
+    try {
+      localStorage.setItem("wedding-language", language);
+    } catch (error) {
+      // Ignore storage errors
+    }
+  }
+
+  // Button clicks
+  languageButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      setLanguage(button.dataset.lang);
+    });
+  });
+
+  // Try to recover previously selected language
+  let savedLanguage = null;
+
+  try {
+    savedLanguage = localStorage.getItem("wedding-language");
+  } catch (error) {
+    // Ignore storage errors
+  }
+
+  // Otherwise use browser language
+  const browserLanguage =
+    navigator.language &&
+    navigator.language.toLowerCase().startsWith("en")
+      ? "en"
+      : "fr";
+
+  // French is the fallback
+  setLanguage(savedLanguage || browserLanguage);
+
+});
+</script>
+  
 </body>
 
 </html>
