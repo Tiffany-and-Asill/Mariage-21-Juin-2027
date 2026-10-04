@@ -118,7 +118,6 @@ a {
   z-index: 100;
 
   display: flex;
-  justify-content: space-between;
   align-items: center;
 
   padding: 18px 5vw;
@@ -131,14 +130,26 @@ a {
   -webkit-backdrop-filter: blur(10px);
 }
 
+/* LOGO — left */
+
 .logo {
+  position: absolute;
+  left: 5vw;
+
   font-family: var(--serif);
   font-size: 25px;
   letter-spacing: 0.05em;
 }
 
+/* MENU — centered */
+
 .header nav {
+  width: 100%;
+
   display: flex;
+  justify-content: center;
+  align-items: center;
+
   gap: 28px;
 }
 
@@ -150,6 +161,8 @@ a {
   letter-spacing: 0.16em;
 
   opacity: 0.55;
+
+  white-space: nowrap;
 
   transition:
     opacity 0.3s ease,
@@ -1199,9 +1212,11 @@ fieldset legend {
 ========================= */
 
 .language-toggle {
-  position: fixed;
-  top: 24px;
-  right: 28px;
+  position: absolute;
+  top: 50%;
+  right: 5vw;
+  transform: translateY(-50%);
+
   z-index: 1000;
 
   display: flex;
