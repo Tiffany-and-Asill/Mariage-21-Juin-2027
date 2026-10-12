@@ -1269,9 +1269,11 @@ fieldset legend {
   }
 }
 
+
 /* MOBILE HEADER */
 @media (max-width: 750px) {
   .header {
+    position: fixed;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -1282,23 +1284,22 @@ fieldset legend {
   .logo {
     position: static;
     font-size: 20px;
-    margin-right: auto;
+    margin-right: 0;
     white-space: nowrap;
   }
 
   .menu-toggle {
     display: block;
-    margin-right: 70px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-right: 0;
     flex-shrink: 0;
-  }
-
-  .header nav,
-  #main-nav {
-    width: 100%;
   }
 
   #main-nav {
     display: none;
+    width: 100%;
     padding-top: 18px;
     padding-bottom: 8px;
   }
@@ -1312,5 +1313,18 @@ fieldset legend {
 
   #main-nav a {
     font-size: 13px;
+  }
+
+  .language-toggle {
+    position: fixed;
+    top: 28px;
+    right: 18px;
+    transform: translateY(-50%);
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 10px;
+    background: transparent;
   }
 }
